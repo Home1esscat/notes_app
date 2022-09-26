@@ -27,21 +27,63 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        onInfoPress: () => log('INFO'),
+        onInfoPress: () => openDialog(context),
         onSearchPress: () => log('SEARCH'),
       ),
       body: colorsFull.isEmpty
           ? const NotesEmpty()
-          : NotesList(colors: colorsFull),
-      floatingActionButton: GestureDetector(
+          : Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: NotesList(colors: colorsFull),
+            ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 16, bottom: 16),
         child: FloatingActionButton(
           onPressed: () => {},
+          elevation: 20,
           backgroundColor: CustomColors.trueBlack,
           isExtended: true,
           child: const Icon(Icons.add_rounded),
         ),
       ),
     );
+  }
+
+  Future openDialog(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: SizedBox(
+                width: 330,
+                height: 236,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      'Made by - Home1esscat',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      'Designed by - Notes App UI',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      'Illustrations - www.storyset.com',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      'Icons - Android Native',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      'Font - Nunito-Regular',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ));
   }
 }
 
@@ -84,15 +126,60 @@ class NotesList extends StatelessWidget {
       separatorBuilder: (context, index) => const SizedBox(height: 20),
       itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
-        return Container(
-          decoration: BoxDecoration(
-            color: colors[index],
-            borderRadius: const BorderRadius.all(
-              Radius.circular(15),
+        return ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15),
+          ),
+          child: Dismissible(
+            confirmDismiss: (DismissDirection direction) async {
+              return await showDeleteDialog(context);
+            },
+            key: ValueKey(index),
+            direction: DismissDirection.horizontal,
+            background: Container(
+              color: Colors.redAccent,
+              height: 100,
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child:
+                    Icon(Icons.delete_rounded, size: 36, color: Colors.white),
+              ),
+            ),
+            child: Container(
+              color: colors[index],
+              height: 100,
             ),
           ),
-          height: 100,
-          margin: const EdgeInsets.only(left: 20, right: 20),
+        );
+      },
+    );
+  }
+
+  Future showDeleteDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text(
+            "Are you sure you wish to delete this note?",
+            style: TextStyle(fontSize: 19),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text(
+                "DELETE",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            MaterialButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text(
+                "CANCEL",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
         );
       },
     );

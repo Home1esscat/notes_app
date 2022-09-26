@@ -3,5 +3,17 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static final dark = ThemeData(
-      fontFamily: 'Nunito', scaffoldBackgroundColor: CustomColors.darkGrey);
+      canvasColor: Colors.yellow,
+      dialogTheme: const DialogTheme(
+        titleTextStyle: TextStyle(color: Colors.white),
+        contentTextStyle: TextStyle(color: Colors.white),
+        backgroundColor: CustomColors.darkGrey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16.0),
+          ),
+        ),
+      ),
+      fontFamily: 'Nunito',
+      scaffoldBackgroundColor: CustomColors.darkGrey);
 }
