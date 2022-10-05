@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:app_client/constants/custom_colors.dart';
-import 'package:app_client/ui/appbar/custom_app_bar.dart';
+import 'package:app_client/ui/appbar/main_app_bar.dart';
+import 'package:app_client/ui/note_add_screen.dart';
+import 'package:app_client/ui/search_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
@@ -9,26 +11,24 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> colorsFull = []
-      ..add(Colors.green)
-      ..add(Colors.orange)
-      ..add(Colors.red)
-      ..add(Colors.blue)
-      ..add(Colors.indigo)
-      ..add(Colors.yellow)
-      ..add(Colors.lightBlue)
-      ..add(Colors.orange)
-      ..add(Colors.red)
-      ..add(Colors.blue)
-      ..add(Colors.indigo)
-      ..add(Colors.yellow);
-
-    List<Color> colorsEmpty = [];
+    List<Color> colorsFull = [
+      Colors.pink,
+      Colors.yellow,
+      Colors.orange,
+      Colors.indigo,
+      Colors.teal,
+      Colors.lime
+    ];
 
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: MainAppBar(
         onInfoPress: () => openDialog(context),
-        onSearchPress: () => log('SEARCH'),
+        onSearchPress: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SearchScreen(),
+          ),
+        ),
       ),
       body: colorsFull.isEmpty
           ? const NotesEmpty()
@@ -39,18 +39,24 @@ class MainScreen extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 16, bottom: 16),
         child: FloatingActionButton(
-          onPressed: () => {},
-          elevation: 20,
+          onPressed: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NoteAddScreen(),
+              ),
+            ),
+          },
+          elevation: 24,
           backgroundColor: CustomColors.trueBlack,
-          isExtended: true,
           child: const Icon(Icons.add_rounded),
         ),
       ),
     );
   }
 
-  Future openDialog(BuildContext context) async {
-    return await showDialog(
+  Future openDialog(BuildContext context) {
+    return showDialog(
         context: context,
         builder: (context) => AlertDialog(
               content: SizedBox(
@@ -124,7 +130,7 @@ class NotesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       separatorBuilder: (context, index) => const SizedBox(height: 20),
-      itemCount: 10,
+      itemCount: 6,
       itemBuilder: (BuildContext context, int index) {
         return ClipRRect(
           borderRadius: const BorderRadius.all(
@@ -137,7 +143,7 @@ class NotesList extends StatelessWidget {
             key: ValueKey(index),
             direction: DismissDirection.horizontal,
             background: Container(
-              color: Colors.redAccent,
+              color: Colors.red,
               height: 100,
               child: const Padding(
                 padding: EdgeInsets.all(16.0),

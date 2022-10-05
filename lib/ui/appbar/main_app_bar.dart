@@ -1,8 +1,8 @@
 import 'package:app_client/constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  const CustomAppBar(
+class MainAppBar extends StatelessWidget with PreferredSizeWidget {
+  const MainAppBar(
       {super.key, required this.onSearchPress, required this.onInfoPress});
 
   final Function onSearchPress;
