@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:app_client/constants/custom_colors.dart';
 import 'package:app_client/ui/appbar/main_app_bar.dart';
-import 'package:app_client/ui/note_add_screen.dart';
+import 'package:app_client/ui/add_note_screen.dart';
 import 'package:app_client/ui/search_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -143,7 +143,7 @@ class NotesList extends StatelessWidget {
             key: ValueKey(index),
             direction: DismissDirection.horizontal,
             background: Container(
-              color: Colors.red,
+              color: CustomColors.deepRed,
               height: 100,
               child: const Padding(
                 padding: EdgeInsets.all(16.0),

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SearchAppBar extends StatelessWidget with PreferredSizeWidget {
-  SearchAppBar(
-      {super.key, required this.onSearchPress, required this.onInfoPress});
+  SearchAppBar({super.key});
 
-  final Function onSearchPress;
-  final Function onInfoPress;
   final _controller = TextEditingController();
 
   @override
@@ -14,7 +11,6 @@ class SearchAppBar extends StatelessWidget with PreferredSizeWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         child: TextField(
-          keyboardAppearance: Brightness.dark,
           autofocus: true,
           textInputAction: TextInputAction.search,
           controller: _controller,
