@@ -1,13 +1,15 @@
-import 'dart:developer';
-
 import 'package:app_client/constants/custom_colors.dart';
+import 'package:app_client/database/tables.dart';
+import 'package:app_client/repository/notes_repository.dart';
 import 'package:app_client/ui/appbar/main_app_bar.dart';
 import 'package:app_client/ui/add_note_screen.dart';
 import 'package:app_client/ui/search_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+  MainScreen({super.key});
+
+  Future<List<Note>> allNotes = NotesRepository().getAllNotes();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class MainScreen extends StatelessWidget {
       Colors.teal,
       Colors.lime
     ];
+    print('ColorINTVAL : ' + colorsFull[1].value.toInt().toString());
 
     return Scaffold(
       appBar: MainAppBar(
@@ -43,7 +46,7 @@ class MainScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const NoteAddScreen(),
+                builder: (context) => NoteAddScreen(),
               ),
             ),
           },
@@ -144,7 +147,6 @@ class NotesList extends StatelessWidget {
             direction: DismissDirection.horizontal,
             background: Container(
               color: CustomColors.deepRed,
-              height: 100,
               child: const Padding(
                 padding: EdgeInsets.all(16.0),
                 child:
@@ -152,8 +154,12 @@ class NotesList extends StatelessWidget {
               ),
             ),
             child: Container(
+              padding: const EdgeInsets.all(16.0),
               color: colors[index],
-              height: 100,
+              child: const Text(
+                'Book Review: The Design of Everyday Things by Don Norman',
+                style: TextStyle(fontSize: 25),
+              ),
             ),
           ),
         );
