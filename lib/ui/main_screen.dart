@@ -5,6 +5,9 @@ import 'package:app_client/ui/appbar/main_app_bar.dart';
 import 'package:app_client/ui/add_note_screen.dart';
 import 'package:app_client/ui/search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../blocs/notes_cubit.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});
@@ -13,6 +16,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = context.read<NotesCubit>();
     List<Color> colorsFull = [
       Colors.pink,
       Colors.yellow,
@@ -21,7 +25,6 @@ class MainScreen extends StatelessWidget {
       Colors.teal,
       Colors.lime
     ];
-    print('ColorINTVAL : ' + colorsFull[1].value.toInt().toString());
 
     return Scaffold(
       appBar: MainAppBar(
@@ -33,12 +36,10 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: colorsFull.isEmpty
-          ? const NotesEmpty()
-          : Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: NotesList(colors: colorsFull),
-            ),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: NotesList(colors: colorsFull),
+      ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 16, bottom: 16),
         child: FloatingActionButton(

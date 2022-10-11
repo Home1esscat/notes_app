@@ -1,6 +1,8 @@
+import 'package:app_client/blocs/notes_cubit.dart';
 import 'package:app_client/ui/main_screen.dart';
 import 'package:app_client/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,10 +14,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.dark,
-      debugShowCheckedModeBanner: false,
-      home: MainScreen(),
+    return Provider<NotesCubit>(
+      create: (_) => NotesCubit(),
+      builder: (context, child) => MaterialApp(
+        theme: AppTheme.dark,
+        debugShowCheckedModeBanner: false,
+        home: MainScreen(),
+      ),
+      dispose: (context, value) => value.close(),
     );
   }
 }

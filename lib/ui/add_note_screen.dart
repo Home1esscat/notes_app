@@ -1,31 +1,53 @@
+import 'package:app_client/blocs/notes_cubit.dart';
 import 'package:app_client/constants/custom_colors.dart';
+import 'package:app_client/database/tables.dart';
 import 'package:app_client/repository/notes_repository.dart';
 import 'package:app_client/ui/appbar/add_note_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NoteAddScreen extends StatelessWidget {
   NoteAddScreen({super.key});
-  final _titleContriller = TextEditingController();
+  final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
   NotesRepository repo = NotesRepository();
 
   @override
   Widget build(BuildContext context) {
+    var cubit = context.read<NotesCubit>();
     void saveNote() {
-      if (_titleContriller.text.isNotEmpty && _bodyController.text.isNotEmpty) {
-        repo.createNote(
-            _titleContriller.text, _bodyController.text, Colors.pink);
+      if (_titleController.text.isNotEmpty && _bodyController.text.isNotEmpty) {
+        cubit.addNotetoDB(
+            _titleController.text, _bodyController.text, Colors.red.value);
+        /*repo.addNote(
+            _titleController.text, _bodyController.text, Colors.red.value);*/
         Navigator.pop(context);
       }
     }
 
+    void deleteNote() async {
+      List<Note> notes = await repo.getAllNotes();
+      repo.deleteNote(notes[1]);
+    }
+
+    void updateNote() async {
+      List<Note> notes = await repo.getAllNotes();
+      repo.updateNote(Note(
+          id: notes[0].id,
+          title: 'НОВЫЙ_ЗАГОЛОВОК',
+          content: 'НОВЫЙ_ЗАГОЛОВОК',
+          color: 099090099));
+    }
+
     return Scaffold(
       appBar: AddNoteAppBar(
+          onCustomPress: () => {updateNote()},
           onSavePress: () => {saveNote()},
           onColorChangePress: () => {
-                repo.getAllNotes().then(
+                cubit.getAllNotes().then((value) => print(value))
+                /*repo.getAllNotes().then(
                       (value) => print(value),
-                    ),
+                    ),*/
               }),
       body: SingleChildScrollView(
         child: Container(
@@ -34,7 +56,7 @@ class NoteAddScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
-                controller: _titleContriller,
+                controller: _titleController,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
