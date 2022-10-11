@@ -15,7 +15,7 @@ class NotesState {
   @override
   int get hashCode => currentNotes.hashCode;
 
-  NotesState copyWith(Future<List<Note>> allNotes, {List<Note>? notes}) {
-    return NotesState(currentNotes: currentNotes ?? this.currentNotes);
+  NotesState copyWith(List<Note> newNotes) {
+    return NotesState(currentNotes: newNotes);
   }
 }
