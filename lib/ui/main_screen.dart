@@ -1,30 +1,21 @@
+import 'package:app_client/blocs/notes_state.dart';
 import 'package:app_client/constants/custom_colors.dart';
-import 'package:app_client/database/tables.dart';
-import 'package:app_client/repository/notes_repository.dart';
 import 'package:app_client/ui/appbar/main_app_bar.dart';
 import 'package:app_client/ui/add_note_screen.dart';
+import 'package:app_client/ui/main_screen_with_content.dart';
 import 'package:app_client/ui/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../blocs/notes_cubit.dart';
+import 'main_screen_empty.dart';
 
 class MainScreen extends StatelessWidget {
-  MainScreen({super.key});
-
-  Future<List<Note>> allNotes = NotesRepository().getAllNotes();
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<NotesCubit>();
-    List<Color> colorsFull = [
-      Colors.pink,
-      Colors.yellow,
-      Colors.orange,
-      Colors.indigo,
-      Colors.teal,
-      Colors.lime
-    ];
 
     return Scaffold(
       appBar: MainAppBar(
@@ -36,10 +27,27 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: NotesList(colors: colorsFull),
+      body: StreamBuilder<NotesState>(
+        initialData: cubit.state,
+        stream: cubit.stream,
+        builder: (context, snapshot) {
+          if (snapshot.data!.currentNotes.isEmpty) {
+            return const MainScreenEmpty();
+          } else {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: MainScreenWithContent(
+                  notes: snapshot.requireData.currentNotes.reversed.toList()),
+            );
+          }
+        },
       ),
+      /*body: isEmpty
+          ? const MainScreenEmpty()
+          : Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: MainScreenWithContent(),
+            ),*/
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 16, bottom: 16),
         child: FloatingActionButton(
@@ -61,140 +69,39 @@ class MainScreen extends StatelessWidget {
 
   Future openDialog(BuildContext context) {
     return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              content: SizedBox(
-                width: 330,
-                height: 236,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      'Made by - Home1esscat',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      'Designed by - Notes App UI',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      'Illustrations - www.storyset.com',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      'Icons - Android Native',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      'Font - Nunito-Regular',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ));
-  }
-}
-
-class NotesEmpty extends StatelessWidget {
-  const NotesEmpty({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Image.asset('assets/images/no_data.png'),
-          const Text(
-            'Create your first note!',
-            style: TextStyle(fontSize: 22, color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class NotesList extends StatelessWidget {
-  const NotesList({
-    Key? key,
-    required this.colors,
-  }) : super(key: key);
-
-  final List<Color> colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      separatorBuilder: (context, index) => const SizedBox(height: 20),
-      itemCount: 6,
-      itemBuilder: (BuildContext context, int index) {
-        return ClipRRect(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15),
-          ),
-          child: Dismissible(
-            confirmDismiss: (DismissDirection direction) async {
-              return await showDeleteDialog(context);
-            },
-            key: ValueKey(index),
-            direction: DismissDirection.horizontal,
-            background: Container(
-              color: CustomColors.deepRed,
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child:
-                    Icon(Icons.delete_rounded, size: 36, color: Colors.white),
-              ),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              color: colors[index],
-              child: const Text(
-                'Book Review: The Design of Everyday Things by Don Norman',
-                style: TextStyle(fontSize: 25),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future showDeleteDialog(BuildContext context) {
-    return showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: const Text(
-            "Are you sure you wish to delete this note?",
-            style: TextStyle(fontSize: 19),
+      builder: (context) => AlertDialog(
+        content: SizedBox(
+          width: 330,
+          height: 236,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                'Made by - Home1esscat',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Designed by - Notes App UI',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Illustrations - www.storyset.com',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Icons - Android Native',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Font - Nunito-Regular',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
-          actions: <Widget>[
-            MaterialButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text(
-                "DELETE",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            MaterialButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text(
-                "CANCEL",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        );
-      },
+        ),
+      ),
     );
   }
 }

@@ -19,8 +19,4 @@ class NotesRepository {
   Future<List<Note>> getAllNotes() async {
     return await database.select(database.notes).get();
   }
-
-  Future<void> closeDB() async {
-    database.close();
-  }
 }

@@ -53,7 +53,7 @@ class AddNoteAppBar extends StatelessWidget with PreferredSizeWidget {
                       color: CustomColors.lightGrey,
                     ),
                     child: const Icon(
-                      Icons.remove_red_eye_outlined,
+                      Icons.palette_outlined,
                       color: Colors.white,
                     ),
                   ),

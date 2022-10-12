@@ -16,7 +16,13 @@ class NotesCubit extends Cubit<NotesState> {
     emit(newNotes);
   }
 
-  Future<void> addNotetoDB(String title, String content, int color) async {
+  Future<void> deleteNote(Note note) async {
+    await _repository.deleteNote(note);
+    final newNotes = state.copyWith(await _repository.getAllNotes());
+    emit(newNotes);
+  }
+
+  Future<void> addNote(String title, String content, int color) async {
     await _repository.addNote(title, content, color);
     final newNotes = state.copyWith(await _repository.getAllNotes());
     emit(newNotes);

@@ -1,6 +1,5 @@
 import 'package:app_client/blocs/notes_cubit.dart';
 import 'package:app_client/constants/custom_colors.dart';
-import 'package:app_client/database/tables.dart';
 import 'package:app_client/ui/appbar/add_note_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +12,11 @@ class NoteAddScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<NotesCubit>();
-    void saveNote() {
-      if (_titleController.text.isNotEmpty && _bodyController.text.isNotEmpty) {
-        cubit.addNotetoDB(
-            _titleController.text, _bodyController.text, Colors.red.value);
 
+    void addNote() {
+      if (_titleController.text.isNotEmpty && _bodyController.text.isNotEmpty) {
+        cubit.addNote(
+            _titleController.text, _bodyController.text, Colors.red.value);
         Navigator.pop(context);
       }
     }
@@ -25,7 +24,7 @@ class NoteAddScreen extends StatelessWidget {
     return Scaffold(
       appBar: AddNoteAppBar(
         onCustomPress: () => {},
-        onSavePress: () => {saveNote()},
+        onSavePress: () => {addNote()},
         onColorChangePress: () =>
             {cubit.getAllNotes().then((value) => print(value))},
       ),
