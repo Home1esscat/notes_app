@@ -6,11 +6,12 @@ class NotesState {
   const NotesState({required this.currentNotes});
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is NotesState &&
-          runtimeType == other.runtimeType &&
-          currentNotes == other.currentNotes);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is NotesState &&
+            runtimeType == other.runtimeType &&
+            currentNotes == other.currentNotes);
+  }
 
   @override
   int get hashCode => currentNotes.hashCode;

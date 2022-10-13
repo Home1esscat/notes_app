@@ -6,7 +6,6 @@ import 'package:app_client/ui/main_screen_with_content.dart';
 import 'package:app_client/ui/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../blocs/notes_cubit.dart';
 import 'main_screen_empty.dart';
 
@@ -34,20 +33,12 @@ class MainScreen extends StatelessWidget {
           if (snapshot.data!.currentNotes.isEmpty) {
             return const MainScreenEmpty();
           } else {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: MainScreenWithContent(
-                  notes: snapshot.requireData.currentNotes.reversed.toList()),
+            return MainScreenWithContent(
+              notes: snapshot.requireData.currentNotes.reversed.toList(),
             );
           }
         },
       ),
-      /*body: isEmpty
-          ? const MainScreenEmpty()
-          : Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: MainScreenWithContent(),
-            ),*/
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 16, bottom: 16),
         child: FloatingActionButton(

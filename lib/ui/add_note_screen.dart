@@ -11,22 +11,61 @@ class NoteAddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = context.read<NotesCubit>();
+    var notesCubit = context.read<NotesCubit>();
+    int tempColorSelected = CustomColors.lightGrey.value;
 
     void addNote() {
       if (_titleController.text.isNotEmpty && _bodyController.text.isNotEmpty) {
-        cubit.addNote(
-            _titleController.text, _bodyController.text, Colors.red.value);
+        notesCubit.addNote(
+            _titleController.text, _bodyController.text, tempColorSelected);
         Navigator.pop(context);
       }
+    }
+
+    Future changeColor(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: SizedBox(
+            width: 210,
+            height: 110,
+            child: GridView.builder(
+              itemCount: CustomColors.colorsData.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, childAspectRatio: 1),
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  margin: const EdgeInsets.all(8),
+                  child: InkWell(
+                    onTap: () => {
+                      tempColorSelected = CustomColors.colorsData[index].value,
+                      Navigator.pop(context)
+                    },
+                    borderRadius: BorderRadius.circular(16),
+                    child: Ink(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(16),
+                        ),
+                        color: CustomColors.colorsData[index],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      );
     }
 
     return Scaffold(
       appBar: AddNoteAppBar(
         onCustomPress: () => {},
         onSavePress: () => {addNote()},
-        onColorChangePress: () =>
-            {cubit.getAllNotes().then((value) => print(value))},
+        onColorChangePress: () => {changeColor(context)},
       ),
       body: SingleChildScrollView(
         child: Container(
