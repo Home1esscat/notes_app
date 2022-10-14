@@ -2,9 +2,11 @@ import 'package:app_client/constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class ShowNoteAppBar extends StatelessWidget with PreferredSizeWidget {
-  const ShowNoteAppBar({super.key, required this.onCustomPress});
+  const ShowNoteAppBar(
+      {super.key, required this.onColorChangePress, required this.color});
 
-  final Function onCustomPress;
+  final Function onColorChangePress;
+  final int color;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +36,18 @@ class ShowNoteAppBar extends StatelessWidget with PreferredSizeWidget {
             ),
             Row(
               children: [
+                Container(
+                  width: 100,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(color),
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                const SizedBox(width: 22),
                 InkWell(
-                  onTap: () => onCustomPress(),
+                  onTap: () => onColorChangePress(),
                   borderRadius: BorderRadius.circular(16),
                   child: Ink(
                     width: 50,
@@ -47,7 +59,7 @@ class ShowNoteAppBar extends StatelessWidget with PreferredSizeWidget {
                       color: CustomColors.lightGrey,
                     ),
                     child: const Icon(
-                      Icons.edit,
+                      Icons.palette_outlined,
                       color: Colors.white,
                     ),
                   ),

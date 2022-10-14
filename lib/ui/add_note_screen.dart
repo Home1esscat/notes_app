@@ -6,66 +6,19 @@ import 'package:provider/provider.dart';
 
 class NoteAddScreen extends StatelessWidget {
   NoteAddScreen({super.key});
+
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
+  int tempColorSelected = CustomColors.colorsData[0].value;
 
   @override
   Widget build(BuildContext context) {
-    var notesCubit = context.read<NotesCubit>();
-    int tempColorSelected = CustomColors.lightGrey.value;
-
-    void addNote() {
-      if (_titleController.text.isNotEmpty && _bodyController.text.isNotEmpty) {
-        notesCubit.addNote(
-            _titleController.text, _bodyController.text, tempColorSelected);
-        Navigator.pop(context);
-      }
-    }
-
-    Future changeColor(BuildContext context) {
-      return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: SizedBox(
-            width: 210,
-            height: 110,
-            child: GridView.builder(
-              itemCount: CustomColors.colorsData.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, childAspectRatio: 1),
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: const EdgeInsets.all(8),
-                  child: InkWell(
-                    onTap: () => {
-                      tempColorSelected = CustomColors.colorsData[index].value,
-                      Navigator.pop(context)
-                    },
-                    borderRadius: BorderRadius.circular(16),
-                    child: Ink(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(16),
-                        ),
-                        color: CustomColors.colorsData[index],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      );
-    }
+    var cubit = context.read<NotesCubit>();
 
     return Scaffold(
       appBar: AddNoteAppBar(
-        onCustomPress: () => {},
-        onSavePress: () => {addNote()},
-        onColorChangePress: () => {changeColor(context)},
+        onSavePress: () => saveNote(cubit, context),
+        onColorChangePress: () => changeColor(context),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -101,5 +54,52 @@ class NoteAddScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> changeColor(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: SizedBox(
+          width: 210,
+          height: 110,
+          child: GridView.builder(
+            itemCount: CustomColors.colorsData.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, childAspectRatio: 1),
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin: const EdgeInsets.all(8),
+                child: InkWell(
+                  onTap: () => {
+                    tempColorSelected = CustomColors.colorsData[index].value,
+                    Navigator.pop(context)
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Ink(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(16),
+                      ),
+                      color: CustomColors.colorsData[index],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void saveNote(NotesCubit cubit, BuildContext context) {
+    if (_titleController.text.isNotEmpty && _bodyController.text.isNotEmpty) {
+      cubit.addNote(
+          _titleController.text, _bodyController.text, tempColorSelected);
+      Navigator.pop(context);
+    }
   }
 }
