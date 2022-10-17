@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 
 class AddNoteAppBar extends StatelessWidget with PreferredSizeWidget {
   const AddNoteAppBar(
-      {super.key, required this.onSavePress, required this.onColorChangePress});
+      {super.key,
+      required this.onSavePress,
+      required this.onColorChangePress,
+      required this.color});
 
   final Function onSavePress;
   final Function onColorChangePress;
+  final int color;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,16 @@ class AddNoteAppBar extends StatelessWidget with PreferredSizeWidget {
             ),
             Row(
               children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(color),
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                const SizedBox(width: 22),
                 InkWell(
                   onTap: () => onColorChangePress(),
                   borderRadius: BorderRadius.circular(16),

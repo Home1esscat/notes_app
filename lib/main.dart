@@ -1,3 +1,4 @@
+import 'package:app_client/blocs/notes_color_cubit.dart';
 import 'package:app_client/blocs/notes_cubit.dart';
 import 'package:app_client/ui/main_screen.dart';
 import 'package:app_client/ui/theme/app_theme.dart';
@@ -14,14 +15,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<NotesCubit>(
-      create: (_) => NotesCubit(),
-      builder: (context, child) => MaterialApp(
+    return MultiProvider(
+      providers: [
+        Provider<NotesCubit>(
+          create: (context) => NotesCubit(),
+          dispose: (context, value) => value.close(),
+        ),
+        Provider<NotesColorCubit>(
+          create: (context) => NotesColorCubit(),
+          dispose: (context, value) => value.close(),
+        ),
+      ],
+      child: MaterialApp(
         theme: AppTheme.dark,
         debugShowCheckedModeBanner: false,
-        home: MainScreen(),
+        home: const MainScreen(),
       ),
-      dispose: (context, value) => value.close(),
     );
   }
 }

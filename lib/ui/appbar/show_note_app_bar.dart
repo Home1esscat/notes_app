@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 
 class ShowNoteAppBar extends StatelessWidget with PreferredSizeWidget {
   const ShowNoteAppBar(
-      {super.key, required this.onColorChangePress, required this.color});
+      {super.key,
+      required this.onColorChangePress,
+      required this.color,
+      required this.onBackPressed});
 
+  final Function onBackPressed;
   final Function onColorChangePress;
   final int color;
 
@@ -17,7 +21,7 @@ class ShowNoteAppBar extends StatelessWidget with PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-              onTap: () => Navigator.pop(context),
+              onTap: () => {onBackPressed()},
               borderRadius: BorderRadius.circular(16),
               child: Ink(
                 width: 50,
@@ -37,7 +41,7 @@ class ShowNoteAppBar extends StatelessWidget with PreferredSizeWidget {
             Row(
               children: [
                 Container(
-                  width: 100,
+                  width: 50,
                   height: 50,
                   decoration: BoxDecoration(
                     color: Color(color),
