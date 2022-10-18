@@ -34,7 +34,7 @@ class NotesCubit extends Cubit<NotesState> {
     emit(newNotes);
   }
 
-  Future<List<Note>> getAllNotes() async {
-    return await _repository.getAllNotes();
+  Future<List<Note>> getNoteByKeyword(String keyword) async {
+    return await _repository.getNotesByKeyword(keyword);
   }
 }

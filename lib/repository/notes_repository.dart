@@ -1,22 +1,30 @@
+import 'package:drift/drift.dart';
+
 import '../database/tables.dart';
 
 class NotesRepository {
-  var database = MyDatabase();
+  final MyDatabase _database = MyDatabase();
 
   Future<void> addNote(String title, String content, int color) async {
-    await database.into(database.notes).insert(
+    await _database.into(_database.notes).insert(
         NotesCompanion.insert(title: title, content: content, color: color));
   }
 
   Future<void> deleteNote(Note note) async {
-    await database.delete(database.notes).delete(note);
+    await _database.delete(_database.notes).delete(note);
   }
 
   Future<void> updateNote(Note note) async {
-    await database.update(database.notes).replace(note);
+    await _database.update(_database.notes).replace(note);
   }
 
   Future<List<Note>> getAllNotes() async {
-    return await database.select(database.notes).get();
+    return await _database.select(_database.notes).get();
+  }
+
+  Future<List<Note>> getNotesByKeyword(String keyword) async {
+    return (_database.select(_database.notes)
+          ..where((a) => a.title.equals(keyword) | a.content.equals(keyword)))
+        .get();
   }
 }

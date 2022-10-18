@@ -1,5 +1,8 @@
 import 'package:app_client/ui/appbar/search_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../blocs/notes_cubit.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -21,6 +24,8 @@ class NotesNotFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var notesCubit = context.read<NotesCubit>();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(

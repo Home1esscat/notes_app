@@ -1,4 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../blocs/notes_cubit.dart';
 
 class SearchAppBar extends StatelessWidget with PreferredSizeWidget {
   SearchAppBar({super.key});
@@ -7,10 +12,15 @@ class SearchAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    var notesCubit = context.read<NotesCubit>();
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         child: TextField(
+          onSubmitted: (value) {
+            print(value);
+          },
           autofocus: true,
           textInputAction: TextInputAction.search,
           controller: _controller,
