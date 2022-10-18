@@ -1,16 +1,19 @@
-# app_client
+# Notes App
 
-A new Flutter project.
+<img width="1248" alt="Снимок экрана 2022-10-18 в 19 09 56" src="https://user-images.githubusercontent.com/15833765/196485158-608fdf13-bf65-436a-a2b8-8c735600ef1f.png">
 
-## Getting Started
+A simple notes app. Uses Drift to store your notes. Assign colors for your notes. Search your notes easily.
 
-This project is a starting point for a Flutter application.
+## Features
+ - Supports Android/iOS (IOS not available yet)
+ - Search notes
+ - List view for notes
+ - Color labels for notes
+ - Smooth UI 
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## To-do
+ - [ ] GridView/ListView switcher 
+ - [ ] AppLock
+ - [ ] Archive notes
+ - [ ] Cloud backup
+ 
