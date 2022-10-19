@@ -1,8 +1,11 @@
+import 'package:app_client/blocs/notes_search_state.dart';
 import 'package:app_client/ui/appbar/search_app_bar.dart';
+import 'package:app_client/ui/main_screen_with_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../blocs/notes_cubit.dart';
+import '../blocs/notes_search_cubit.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -24,9 +27,34 @@ class NotesNotFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var notesCubit = context.read<NotesCubit>();
+    var searchCubit = context.read<NotesSearchCubit>();
 
-    return Padding(
+    return Container(
+      child: StreamBuilder<NotesSearchState>(
+          stream: searchCubit.stream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return MainScreenWithContent(notes: snapshot.data!.currentNotes);
+            } else {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Image.asset('assets/images/no_notes.png'),
+                    const Text(
+                      'File not found. Try searching again',
+                      style: TextStyle(fontSize: 22, color: Colors.white),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }),
+    );
+    /*return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
@@ -40,6 +68,6 @@ class NotesNotFoundScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 }

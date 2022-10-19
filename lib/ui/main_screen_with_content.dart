@@ -1,4 +1,3 @@
-import 'package:app_client/ui/show_note_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../blocs/notes_cubit.dart';
@@ -71,11 +70,8 @@ class MainScreenWithContent extends StatelessWidget {
                 ),
               ),
               child: InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ShowNoteScreen(note: notes[index]))),
+                onTap: () => Navigator.pushNamed(context, '/show',
+                    arguments: {'note': notes[index]}),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(16.0),

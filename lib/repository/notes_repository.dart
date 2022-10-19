@@ -23,8 +23,10 @@ class NotesRepository {
   }
 
   Future<List<Note>> getNotesByKeyword(String keyword) async {
-    return (_database.select(_database.notes)
-          ..where((a) => a.title.equals(keyword) | a.content.equals(keyword)))
+    return await (_database.select(_database.notes)
+          ..where(
+            (a) => a.title.contains(keyword) | a.content.contains(keyword),
+          ))
         .get();
   }
 }

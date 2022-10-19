@@ -8,16 +8,18 @@ import '../database/tables.dart';
 import 'appbar/show_note_app_bar.dart';
 
 class ShowNoteScreen extends StatelessWidget {
-  ShowNoteScreen({super.key, required this.note});
+  ShowNoteScreen({super.key});
 
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
-  final Note note;
 
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<NotesCubit>();
     var colorCubit = context.read<NotesColorCubit>();
+
+    Note note = (ModalRoute.of(context)?.settings.arguments as Map)['note'];
+
     colorCubit.changeColor(note.color);
     _titleController.text = note.title;
     _bodyController.text = note.content;
